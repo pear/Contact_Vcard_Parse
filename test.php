@@ -9,4 +9,12 @@
     // instantiate a parser object
     $parse = new Contact_Vcard_Parse();
     
+    // parse it
+    $data = $parse->fromFile('test.vcf');
+    
+    // output results
+    echo '<pre>';
+    print_r($data);
+    echo '</pre>';
+    
 ?>
