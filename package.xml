@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<package version="1.0">
+  <name>Contact_Vcard_Parse</name>
+  <summary>Parse vCard 2.1 and 3.0 files.</summary>
+  <description>Allows you to parse vCard files and text blocks, and get back an array of the elements of each vCard in the file or text.</description>
+  <maintainers>
+    <maintainer>
+      <user>pmjones</user>
+      <name>Paul M. Jones</name>
+      <email>pjones@ciaweb.net</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>1.21</version>
+    <date>2003-06-02</date>
+    <license>PHP License</license>
+    <state>stable</state>
+    <notes>Added &quot;require_once 'PEAR.php';&quot; just before the class definition.</notes>
+    <filelist>
+      <file role="php" name="Contact_Vcard_Parse.php"/>
+    </filelist>
+  </release>
+</package>
