@@ -13,10 +13,11 @@
 // | obtain it through the world-wide-web, please send a note to          | 
 // | license@php.net so we can mail you a copy immediately.               | 
 // +----------------------------------------------------------------------+ 
-// | Authors: Paul M. Jones <pjones@ciaweb.net>                           | 
+// | Authors: Paul M. Jones <pmjones@ciaweb.net>                          | 
 // +----------------------------------------------------------------------+ 
 // 
 // $Id$ 
+
 
 /**
 * 
@@ -45,7 +46,7 @@
 * </code>
 * 
 *
-* @author Paul M. Jones <pjones@ciaweb.net>
+* @author Paul M. Jones <pmjones@ciaweb.net>
 * 
 * @package Contact_Vcard_Parse
 * 
@@ -68,18 +69,61 @@ class Contact_Vcard_Parse {
     * @return array An array of of vCard information extracted from the
     * file.
     * 
-    * @see Contact_Vcard_Parse::_fromText()
+    * @see Contact_Vcard_Parse::fromText()
+    * 
     * @see Contact_Vcard_Parse::_fromArray()
     * 
     */
     
     function fromFile($filename, $decode_qp = true)
     {
-        // get the file data
-        $text = implode('', file($filename));
+        $text = $this->fileGetContents($filename);
         
-        // dump to, and get return from, the fromText() method.
-        return $this->fromText($text, $decode_qp);
+        if ($text === false) {
+            return false;
+        } else {
+            // dump to, and get return from, the fromText() method.
+            return $this->fromText($text, $decode_qp);
+        }
+    }
+    
+    
+    /**
+    * 
+    * Reads the contents of a file.  Included for users whose PHP < 4.3.0.
+    * 
+    * @access public
+    * 
+    * @param array $filename The filename to read for vCard information.
+    * 
+    * @return string|bool The contents of the file if it exists and is
+    * readable, or boolean false if not.
+    * 
+    * @see Contact_Vcard_Parse::fromFile()
+    * 
+    */
+    
+    function fileGetContents($filename)
+    {
+        if (file_exists($filename) &&
+            is_readable($filename)) {
+            
+            $text = '';
+            $len = filesize($filename);
+            
+            $fp = fopen($filename, 'r');
+            while ($line = fread($fp, filesize($filename))) {
+                $text .= $line;
+            }
+            fclose($fp);
+            
+            return $text;
+            
+        } else {
+        
+            return false;
+            
+        }
     }
     
     
@@ -106,13 +150,13 @@ class Contact_Vcard_Parse {
         $this->convertLineEndings($text);
         
         // unfold lines.  concat two lines where line 1 ends in \n and
-        // line 2 starts with any amount of whitespace.  only removes
+        // line 2 starts with a whitespace character.  only removes
         // the first whitespace character, leaves others in place.
         $fold_regex = '(\n)([ |\t])';
         $text = preg_replace("/$fold_regex/i", "", $text);
         
-        // massage for Mac Address Book (remove nulls it puts in for
-        // unicode chars)
+        // massage for Macintosh OS X Address Book (remove nulls that
+        // Address Book puts in for unicode chars)
         $text = str_replace("\x00", '', $text);
         
         // convert the resulting text to an array of lines
@@ -129,8 +173,6 @@ class Contact_Vcard_Parse {
     * 
     * Takes any text block and converts all line endings to UNIX
     * standard. DOS line endings are \r\n, Mac are \r, and UNIX is \n.
-    * As a side-effect, all double-newlines (\n\n) are converted to a
-    * single-newline.
     *
     * NOTE: Acts on the text block in-place; does not return a value.
     * 
@@ -144,14 +186,11 @@ class Contact_Vcard_Parse {
     
     function convertLineEndings(&$text)
     {
-        // first, replace \r with \n to fix up from DOS and Mac
-        $text = str_replace("\r", "\n", $text);
+        // DOS
+        $text = str_replace("\r\n", "\n", $text);
         
-        // now eliminate all instances of double-newlines that result
-        // from having converted \r\n to \n\n (from DOS).  note that
-        // this removes newlines in general, not only if they resulted
-        // from the earlier conversion of \r.
-        $text = str_replace("\n\n", "\n", $text);
+        // Mac
+        $text = str_replace("\r", "\n", $text);
     }
     
     
