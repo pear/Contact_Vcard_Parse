@@ -12,11 +12,17 @@
     </maintainer>
   </maintainers>
   <release>
-    <version>1.21</version>
-    <date>2003-06-02</date>
+    <version>1.30</version>
+    <date>2004-02-18</date>
     <license>PHP License</license>
     <state>stable</state>
-    <notes>Added &quot;require_once 'PEAR.php';&quot; just before the class definition.</notes>
+    <notes>
+    	* Now deals with Mac OS X Address Book unicode by stripping all \x00 nulls from the source text (suggested simultaneously by Jose Luis Pellicer and Nick Lo)
+    	* Updated line-ending conversion method
+    	* Updated comments
+    	* Added a fileGetContents() method to support users who have PHP earlier than 4.3.0
+    	* Updated fromFile() to use fileGetContents() method
+    </notes>
     <filelist>
       <file role="php" name="Contact_Vcard_Parse.php"/>
     </filelist>
