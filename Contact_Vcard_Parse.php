@@ -13,7 +13,7 @@
 // | obtain it through the world-wide-web, please send a note to          | 
 // | license@php.net so we can mail you a copy immediately.               | 
 // +----------------------------------------------------------------------+ 
-// | Authors: Paul M. Jones <pmjones@ciaweb.net>                          | 
+// | Authors: Paul M. Jones <pmjones@php.net>                             | 
 // +----------------------------------------------------------------------+ 
 // 
 // $Id$ 
@@ -46,11 +46,11 @@
 * </code>
 * 
 *
-* @author Paul M. Jones <pmjones@ciaweb.net>
+* @author Paul M. Jones <pmjones@php.net>
 * 
 * @package Contact_Vcard_Parse
 * 
-* @version 1.30
+* @version 1.31
 * 
 */
 
@@ -273,6 +273,7 @@ class Contact_Vcard_Parse {
     * Used to make string human-readable after being a vCard value.
     * 
     * Converts...
+    *     \: => :
     *     \; => ;
     *     \, => ,
     *     literal \n => newline
@@ -699,7 +700,8 @@ class Contact_Vcard_Parse {
     
     function _parseN($text)
     {
-        $tmp = $this->splitBySemi($text);
+    	// make sure there are always at least 5 elements
+        $tmp = array_pad($this->splitBySemi($text), 5, '');
         return array(
             $this->splitByComma($tmp[0]), // family (last)
             $this->splitByComma($tmp[1]), // given (first)
@@ -729,7 +731,8 @@ class Contact_Vcard_Parse {
     
     function _parseADR($text)
     {
-        $tmp = $this->splitBySemi($text);
+    	// make sure there are always at least 7 elements
+        $tmp = array_pad($this->splitBySemi($text), 7, '');
         return array(
             $this->splitByComma($tmp[0]), // pob
             $this->splitByComma($tmp[1]), // extend
@@ -826,7 +829,8 @@ class Contact_Vcard_Parse {
     
     function _parseGEO($text)
     {
-        $tmp = $this->splitBySemi($text);
+    	// make sure there are always at least 2 elements
+        $tmp = array_pad($this->splitBySemi($text), 2, '');
         return array(
             array($tmp[0]), // lat
             array($tmp[1])  // lon
