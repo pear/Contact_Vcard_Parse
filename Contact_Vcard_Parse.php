@@ -293,6 +293,7 @@ class Contact_Vcard_Parse {
                 $text[$key] = $val;
             }
         } else {
+            $text = str_replace('\:', ':', $text);
             $text = str_replace('\;', ';', $text);
             $text = str_replace('\,', ',', $text);
             $text = str_replace('\n', "\n", $text);
@@ -496,7 +497,7 @@ class Contact_Vcard_Parse {
         $split = $this->splitBySemi($text);
         
         // only return first element (the typedef)
-        return $split[0];
+        return strtoupper($split[0]);
     }
     
     
