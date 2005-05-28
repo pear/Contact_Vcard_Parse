@@ -7,24 +7,26 @@
     <maintainer>
       <user>pmjones</user>
       <name>Paul M. Jones</name>
-      <email>pjones@ciaweb.net</email>
+      <email>pmjones@php.net</email>
       <role>lead</role>
     </maintainer>
   </maintainers>
   <release>
-    <version>1.30</version>
-    <date>2004-02-18</date>
+    <version>1.31.0</version>
+    <date>2005-05-27</date>
     <license>PHP License</license>
     <state>stable</state>
     <notes>
-    	* Now deals with Mac OS X Address Book unicode by stripping all \x00 nulls from the source text (suggested simultaneously by Jose Luis Pellicer and Nick Lo)
-    	* Updated line-ending conversion method
-    	* Updated comments
-    	* Added a fileGetContents() method to support users who have PHP earlier than 4.3.0
-    	* Updated fromFile() to use fileGetContents() method
+      * fixed bug 4079 "lower case of Type-Definition" -- thanks to valeksa at gmail dot com for patch
+      * unescape() now un-escapes colons per the RFC
+      * fixed bug 4445 "vCard Parser fails when N field doesn't contain all fields"
+      * fixed issues similar for bug 4445 in ADR and GEO fields
+      * added eyeball-test files to the package
     </notes>
     <filelist>
-      <file role="php" name="Contact_Vcard_Parse.php"/>
+      <file role="php" name="Contact_Vcard_Parse.php" />
+      <file role="test" name="test.php" />
+      <file role="test" name="test.vcf" />
     </filelist>
   </release>
 </package>
