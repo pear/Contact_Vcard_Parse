@@ -294,10 +294,16 @@ class Contact_Vcard_Parse {
                 $text[$key] = $val;
             }
         } else {
+            /*
             $text = str_replace('\:', ':', $text);
             $text = str_replace('\;', ';', $text);
             $text = str_replace('\,', ',', $text);
             $text = str_replace('\n', "\n", $text);
+            */
+            // combined
+            $find    = array('\:', '\;', '\,', '\n');
+            $replace = array(':',  ';',  ',',  "\n");
+            $text    = str_replace($find, $replace, $text);
         }
     }
     
@@ -700,7 +706,7 @@ class Contact_Vcard_Parse {
     
     function _parseN($text)
     {
-    	// make sure there are always at least 5 elements
+        // make sure there are always at least 5 elements
         $tmp = array_pad($this->splitBySemi($text), 5, '');
         return array(
             $this->splitByComma($tmp[0]), // family (last)
@@ -731,7 +737,7 @@ class Contact_Vcard_Parse {
     
     function _parseADR($text)
     {
-    	// make sure there are always at least 7 elements
+        // make sure there are always at least 7 elements
         $tmp = array_pad($this->splitBySemi($text), 7, '');
         return array(
             $this->splitByComma($tmp[0]), // pob
@@ -829,7 +835,7 @@ class Contact_Vcard_Parse {
     
     function _parseGEO($text)
     {
-    	// make sure there are always at least 2 elements
+        // make sure there are always at least 2 elements
         $tmp = array_pad($this->splitBySemi($text), 2, '');
         return array(
             array($tmp[0]), // lat
