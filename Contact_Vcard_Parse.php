@@ -50,7 +50,7 @@
 * 
 * @package Contact_Vcard_Parse
 * 
-* @version 1.31
+* @version 1.32
 * 
 */
 
@@ -552,7 +552,11 @@ class Contact_Vcard_Parse {
             $name = $this->_getParamName($key);
             
             // list of all parameter values
-            $listall = trim($tmp[1]);
+            if (isset($tmp[1])) {
+	            $listall = trim($tmp[1]);
+            } else {
+                $listall = '';
+            }
             
             // if there is a value-list for this parameter, they are
             // separated by commas, so split them out too.
