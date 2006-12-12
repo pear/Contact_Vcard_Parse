@@ -81,6 +81,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
   * File is now at Contact/Vcard/Parse.php (still keeping old location for BC)
   * Fix bug #5988: does not work with apple adressbook exported vcard files
   * Using package.xml v2.0
+   </notes>
   </release>
 
   <release>
@@ -99,7 +100,9 @@ http://pear.php.net/dtd/package-2.0.xsd">
     * unescape() now un-escapes colons per the RFC
     * fixed bug 4445 &quot;vCard Parser fails when N field doesn&apos;t contain all fields&quot;
     * fixed issues similar for bug 4445 in ADR and GEO fields
-    * added eyeball-test files to the package   </notes>
+    * added eyeball-test files to the package
+   </notes>
   </release>
+
  </changelog>
 </package>
