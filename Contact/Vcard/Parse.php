@@ -1,75 +1,75 @@
 <?php
 /* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
-// +----------------------------------------------------------------------+
-// | PHP version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2002 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.0 of the PHP license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Paul M. Jones <pmjones@php.net>                             |
-// +----------------------------------------------------------------------+
-//
-// $Id$
-
+/**
+ * Parse vCard 2.1 and 3.0 text blocks.
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 2.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/2_02.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the world-wide-web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category  File Formats
+ * @package   Contact_Vcard_Parse
+ * @author    Paul M. Jones <pjones@ciaweb.net>
+ * @copyright 1997-2007 The PHP Group
+ * @license   http://www.php.net/license/2_02.txt  PHP License 2.0
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/Contact_Vcard_Parse
+ */
 
 /**
-*
-* Parser for vCards.
-*
-* This class parses vCard 2.1 and 3.0 sources from file or text into a
-* structured array.
-*
-* Usage:
-*
-* <code>
-*     // include this class file
-*     require_once 'Contact_Vcard_Parse.php';
-*
-*     // instantiate a parser object
-*     $parse = new Contact_Vcard_Parse();
-*
-*     // parse a vCard file and store the data
-*     // in $cardinfo
-*     $cardinfo = $parse->fromFile('sample.vcf');
-*
-*     // view the card info array
-*     echo '<pre>';
-*     print_r($cardinfo);
-*     echo '</pre>';
-* </code>
-*
-*
-* @author Paul M. Jones <pmjones@php.net>
-*
-* @package Contact_Vcard_Parse
-*
-* @version 1.32
-*
-*/
+ * Parser for vCards.
+ *
+ * This class parses vCard 2.1 and 3.0 sources from file or text into a
+ * structured array.
+ *
+ * Usage:
+ *
+ * <code>
+ *     // include this class file
+ *     require_once 'Contact_Vcard_Parse.php';
+ *
+ *     // instantiate a parser object
+ *     $parse = new Contact_Vcard_Parse();
+ *
+ *     // parse a vCard file and store the data
+ *     // in $cardinfo
+ *     $cardinfo = $parse->fromFile('sample.vcf');
+ *
+ *     // view the card info array
+ *     echo '<pre>';
+ *     print_r($cardinfo);
+ *     echo '</pre>';
+ * </code>
+ *
+ * @category  File Formats
+ * @package   Contact_Vcard_Parse
+ * @author    Paul M. Jones <pmjones@php.net>
+ * @copyright 1997-2007 The PHP Group
+ * @license   http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version   Release: 1.31.0
+ * @link      http://pear.php.net/package/Contact_Vcard_Parse
+ */
 
 class Contact_Vcard_Parse
 {
     /**
-    *
     * Reads a file for parsing, then sends it to $this->fromText()
     * and returns the results.
     *
-    * @access public
-    *
-    * @param array $filename The filename to read for vCard information.
+    * @param array   $filename  The filename to read for vCard information.
+    * @param boolean $decode_qp Optional; Decode quoted printable if true. This
+    * is the default.
     *
     * @return array An array of of vCard information extracted from the
     * file.
     *
-    * @see Contact_Vcard_Parse::fromText()
+    * @access public
     *
+    * @see Contact_Vcard_Parse::fromText()
     * @see Contact_Vcard_Parse::_fromArray()
     *
     */
@@ -87,13 +87,11 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Reads the contents of a file.  Included for users whose PHP < 4.3.0.
-    *
-    * @access public
     *
     * @param array $filename The filename to read for vCard information.
     *
+    * @access public
     * @return string|bool The contents of the file if it exists and is
     * readable, or boolean false if not.
     *
@@ -106,7 +104,7 @@ class Contact_Vcard_Parse
             is_readable($filename)) {
 
             $text = '';
-            $len = filesize($filename);
+            $len  = filesize($filename);
 
             $fp = fopen($filename, 'r');
             while ($line = fread($fp, filesize($filename))) {
@@ -125,14 +123,14 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Prepares a block of text for parsing, then sends it through and
     * returns the results from $this->fromArray().
     *
+    * @param array   $text      A block of text to read for vCard information.
+    * @param boolean $decode_qp Optional; Decode quoted printable if true. This
+    * is the default.
+    *
     * @access public
-    *
-    * @param array $text A block of text to read for vCard information.
-    *
     * @return array An array of vCard information extracted from the
     * source text.
     *
@@ -149,7 +147,7 @@ class Contact_Vcard_Parse
         // line 2 starts with a whitespace character.  only removes
         // the first whitespace character, leaves others in place.
         $fold_regex = '(\n)([ |\t])';
-        $text = preg_replace("/$fold_regex/i", "", $text);
+        $text       = preg_replace("/$fold_regex/i", "", $text);
 
         // massage for Macintosh OS X Address Book (remove nulls that
         // Address Book puts in for unicode chars)
@@ -164,7 +162,6 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Converts line endings in text.
     *
     * Takes any text block and converts all line endings to UNIX
@@ -172,10 +169,9 @@ class Contact_Vcard_Parse
     *
     * NOTE: Acts on the text block in-place; does not return a value.
     *
+    * @param string &$text The string on which to convert line endings.
+    *
     * @access public
-    *
-    * @param string $text The string on which to convert line endings.
-    *
     * @return void
     *
     */
@@ -190,20 +186,16 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Splits a string into an array at semicolons.  Honors backslash-
     * escaped semicolons (i.e., splits at ';' not '\;').
     *
-    * @access public
-    *
-    * @param string $text The string to split into an array.
-    *
-    * @param bool $convertSingle If splitting the string results in a
+    * @param string  $text          The string to split into an array.
+    * @param boolean $convertSingle If splitting the string results in a
     * single array element, return a string instead of a one-element
-    * array.
+    * array. Optional - defaults to false
     *
+    * @access public
     * @return mixed An array of values, or a single string.
-    *
     */
     function splitBySemi($text, $convertSingle = false)
     {
@@ -212,7 +204,7 @@ class Contact_Vcard_Parse
         // up as as double-backs (\\), which is what preg_split requires
         // to indicate a single backslash (\). what a mess.
         $regex = '(?<!\\\\)(\;)';
-        $tmp = preg_split("/$regex/i", $text);
+        $tmp   = preg_split("/$regex/i", $text);
 
         // if there is only one array-element and $convertSingle is
         // true, then return only the value of that one array element
@@ -226,20 +218,16 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Splits a string into an array at commas.  Honors backslash-
     * escaped commas (i.e., splits at ',' not '\,').
     *
-    * @access public
-    *
-    * @param string $text The string to split into an array.
-    *
-    * @param bool $convertSingle If splitting the string results in a
+    * @param string  $text          The string to split into an array.
+    * @param boolean $convertSingle If splitting the string results in a
     * single array element, return a string instead of a one-element
-    * array.
+    * array. Optional - defaults to false.
     *
+    * @access public
     * @return mixed An array of values, or a single string.
-    *
     */
     function splitByComma($text, $convertSingle = false)
     {
@@ -248,7 +236,7 @@ class Contact_Vcard_Parse
         // up as as double-backs (\\), which is what preg_split requires
         // to indicate a single backslash (\). ye gods, how ugly.
         $regex = '(?<!\\\\)(\,)';
-        $tmp = preg_split("/$regex/i", $text);
+        $tmp   = preg_split("/$regex/i", $text);
 
         // if there is only one array-element and $convertSingle is
         // true, then return only the value of that one array element
@@ -262,7 +250,6 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Used to make string human-readable after being a vCard value.
     *
     * Converts...
@@ -271,10 +258,9 @@ class Contact_Vcard_Parse
     *     \, => ,
     *     literal \n => newline
     *
+    * @param mixed &$text The text to unescape.
+    *
     * @access public
-    *
-    * @param mixed $text The text to unescape.
-    *
     * @return void
     *
     */
@@ -301,7 +287,6 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Emulated destructor.
     *
     * @access private
@@ -315,17 +300,17 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Parses an array of source lines and returns an array of vCards.
     * Each element of the array is itself an array expressing the types,
     * parameters, and values of each part of the vCard. Processes both
     * 2.1 and 3.0 vCard sources.
     *
-    * @access private
-    *
-    * @param array $source An array of lines to be read for vCard
+    * @param array   $source    An array of lines to be read for vCard
     * information.
+    * @param boolean $decode_qp Optional; Decode quoted printable if true.
+    * This is the default.
     *
+    * @access private
     * @return array An array of of vCard information extracted from the
     * source array.
     *
@@ -362,7 +347,7 @@ class Contact_Vcard_Parse
             }
 
             // get the left and right portions
-            $left = trim(substr($line, 0, $pos));
+            $left  = trim(substr($line, 0, $pos));
             $right = trim(substr($line, $pos+1, strlen($line)));
 
             // have we started yet?
@@ -398,7 +383,7 @@ class Contact_Vcard_Parse
                     // ...and reset to grab a new card if one exists in
                     // the source array.
                     $begin = false;
-                    $card = array();
+                    $card  = array();
 
                 } else {
 
@@ -408,7 +393,7 @@ class Contact_Vcard_Parse
                     // (the kind of information) and parameters for the
                     // type.
                     $typedef = $this->_getTypeDef($left);
-                    $params = $this->_getParams($left);
+                    $params  = $this->_getParams($left);
 
                     // if we are decoding quoted-printable, do so now.
                     // QUOTED-PRINTABLE is not allowed in version 3.0,
@@ -480,14 +465,12 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Takes a vCard line and extracts the Type-Definition for the line.
-    *
-    * @access private
     *
     * @param string $text A left-part (before-the-colon part) from a
     * vCard line.
     *
+    * @access private
     * @return string The type definition for the line.
     *
     */
@@ -502,14 +485,12 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Finds the Type-Definition parameters for a vCard line.
-    *
-    * @access private
     *
     * @param string $text A left-part (before-the-colon part) from a
     * vCard line.
     *
+    * @access private
     * @return mixed An array of parameters.
     *
     */
@@ -545,7 +526,7 @@ class Contact_Vcard_Parse
 
             // list of all parameter values
             if (isset($tmp[1])) {
-	            $listall = trim($tmp[1]);
+                $listall = trim($tmp[1]);
             } else {
                 $listall = '';
             }
@@ -581,17 +562,15 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Looks at the parameters of a vCard line; if one of them is
     * ENCODING[] => QUOTED-PRINTABLE then decode the text in-place.
     *
-    * @access private
+    * @param array  &$params A parameter array from a vCard line.
     *
-    * @param array $params A parameter array from a vCard line.
-    *
-    * @param string $text A right-part (after-the-colon part) from a
+    * @param string &$text   A right-part (after-the-colon part) from a
     * vCard line.
     *
+    * @access private
     * @return void
     *
     */
@@ -619,7 +598,6 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Returns parameter names from 2.1-formatted vCards.
     *
     * The vCard 2.1 specification allows parameter values without a
@@ -629,11 +607,10 @@ class Contact_Vcard_Parse
     * Shamelessly lifted from Frank Hellwig <frank@hellwig.org> and his
     * vCard PHP project <http://vcardphp.sourceforge.net>.
     *
-    * @access private
-    *
     * @param string $value The first element in a parameter name-value
     * pair.
     *
+    * @access private
     * @return string The proper parameter name (TYPE, ENCODING, or
     * VALUE).
     *
@@ -682,15 +659,13 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Parses a vCard line value identified as being of the "N"
     * (structured name) type-defintion.
-    *
-    * @access private
     *
     * @param string $text The right-part (after-the-colon part) of a
     * vCard line.
     *
+    * @access private
     * @return array An array of key-value pairs where the key is the
     * portion-name and the value is the portion-value.  The value itself
     * may be an array as well if multiple comma-separated values were
@@ -712,15 +687,13 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Parses a vCard line value identified as being of the "ADR"
     * (structured address) type-defintion.
-    *
-    * @access private
     *
     * @param string $text The right-part (after-the-colon part) of a
     * vCard line.
     *
+    * @access private
     * @return array An array of key-value pairs where the key is the
     * portion-name and the value is the portion-value.  The value itself
     * may be an array as well if multiple comma-separated values were
@@ -744,15 +717,13 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Parses a vCard line value identified as being of the "NICKNAME"
     * (informal or descriptive name) type-defintion.
-    *
-    * @access private
     *
     * @param string $text The right-part (after-the-colon part) of a
     * vCard line.
     *
+    * @access private
     * @return array An array of nicknames.
     *
     */
@@ -763,15 +734,13 @@ class Contact_Vcard_Parse
 
 
     /**
-    *
     * Parses a vCard line value identified as being of the "ORG"
     * (organizational info) type-defintion.
-    *
-    * @access private
     *
     * @param string $text The right-part (after-the-colon part) of a
     * vCard line.
     *
+    * @access private
     * @return array An array of organizations; each element of the array
     * is itself an array, which indicates primary organization and
     * sub-organizations.
@@ -779,7 +748,7 @@ class Contact_Vcard_Parse
     */
     function _parseORG($text)
     {
-        $tmp = $this->splitbySemi($text);
+        $tmp  = $this->splitbySemi($text);
         $list = array();
         foreach ($tmp as $val) {
             $list[] = array($val);
@@ -788,18 +757,15 @@ class Contact_Vcard_Parse
         return $list;
     }
 
-
     /**
-    *
     * Parses a vCard line value identified as being of the "CATEGORIES"
     * (card-category) type-defintion.
-    *
-    * @access private
     *
     * @param string $text The right-part (after-the-colon part) of a
     * vCard line.
     *
-    * @return mixed An array of categories.
+    * @access private
+    * @return array An array of categories.
     *
     */
     function _parseCATEGORIES($text)
@@ -807,18 +773,15 @@ class Contact_Vcard_Parse
         return array($this->splitByComma($text));
     }
 
-
     /**
-    *
     * Parses a vCard line value identified as being of the "GEO"
     * (geographic coordinate) type-defintion.
-    *
-    * @access private
     *
     * @param string $text The right-part (after-the-colon part) of a
     * vCard line.
     *
-    * @return mixed An array of lat-lon geocoords.
+    * @access private
+    * @return array An array of lat-lon geocoords.
     *
     */
     function _parseGEO($text)
