@@ -1,5 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 /**
  * Parse vCard 2.1 and 3.0 text blocks.
  *
