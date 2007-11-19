@@ -11,7 +11,7 @@
  * the PHP License and are unable to obtain it through the world-wide-web, please
  * send a note to license@php.net so we can mail you a copy immediately.
  *
- * @category  File Formats
+ * @category  File_Formats
  * @package   Contact_Vcard_Parse
  * @author    Paul M. Jones <pjones@ciaweb.net>
  * @copyright 1997-2007 The PHP Group
@@ -45,7 +45,7 @@
  *     echo '</pre>';
  * </code>
  *
- * @category  File Formats
+ * @category  File_Formats
  * @package   Contact_Vcard_Parse
  * @author    Paul M. Jones <pmjones@php.net>
  * @copyright 1997-2007 The PHP Group
@@ -59,9 +59,10 @@ class Contact_Vcard_Parse
      * Reads a file for parsing, then sends it to $this->fromText()
      * and returns the results.
      *
-     * @param  array   $filename  The filename to read for vCard information.
-     * @param  boolean $decode_qp Optional; Decode quoted printable if true. This
-     *         is the default.
+     * @param array   $filename  The filename to read for vCard information.
+     * @param boolean $decode_qp Optional; Decode quoted printable if true. This
+     *        is the default.
+     *
      * @return array An array of of vCard information extracted from the
      *         file.
      * @access public
@@ -82,11 +83,12 @@ class Contact_Vcard_Parse
     /**
      * Reads the contents of a file.  Included for users whose PHP < 4.3.0.
      *
-     * @param  array $filename The filename to read for vCard information.
+     * @param array $filename The filename to read for vCard information.
+     *
      * @access public
      * @return string|bool The contents of the file if it exists and is
      *         readable, or boolean false if not.
-     * @see    self::fromFile()
+     * @see self::fromFile()
      */
     function fileGetContents($filename)
     {
@@ -112,13 +114,14 @@ class Contact_Vcard_Parse
      * Prepares a block of text for parsing, then sends it through and
      * returns the results from $this->fromArray().
      *
-     * @param  array   $text      A block of text to read for vCard information.
-     * @param  boolean $decode_qp Optional; Decode quoted printable if true. This
-     *         is the default.
+     * @param array   $text      A block of text to read for vCard information.
+     * @param boolean $decode_qp Optional; Decode quoted printable if true. This
+     *        is the default.
+     *
      * @access public
      * @return array An array of vCard information extracted from the
      *         source text.
-     * @see    self::_fromArray()
+     * @see self::_fromArray()
      */
     function fromText($text, $decode_qp = true)
     {
@@ -151,7 +154,8 @@ class Contact_Vcard_Parse
      *
      * NOTE: Acts on the text block in-place; does not return a value.
      *
-     * @param  string &$text The string on which to convert line endings.
+     * @param string &$text The string on which to convert line endings.
+     *
      * @access public
      * @return void
      */
@@ -168,10 +172,11 @@ class Contact_Vcard_Parse
      * Splits a string into an array at semicolons.  Honors backslash-
      * escaped semicolons (i.e., splits at ';' not '\;').
      *
-     * @param  string  $text          The string to split into an array.
-     * @param  boolean $convertSingle If splitting the string results in a
-     *         single array element, return a string instead of a one-
-     *         element array. Optional - defaults to false
+     * @param string  $text          The string to split into an array.
+     * @param boolean $convertSingle If splitting the string results in a
+     *        single array element, return a string instead of a one-
+     *        element array. Optional - defaults to false
+     *
      * @access public
      * @return mixed An array of values, or a single string.
      */
@@ -197,10 +202,11 @@ class Contact_Vcard_Parse
      * Splits a string into an array at commas.  Honors backslash-
      * escaped commas (i.e., splits at ',' not '\,').
      *
-     * @param  string  $text          The string to split into an array.
-     * @param  boolean $convertSingle If splitting the string results in a
-     *         single array element, return a string instead of a one-
-     *         element array. Optional - defaults to false.
+     * @param string  $text          The string to split into an array.
+     * @param boolean $convertSingle If splitting the string results in a
+     *        single array element, return a string instead of a one-
+     *        element array. Optional - defaults to false.
+     *
      * @access public
      * @return mixed An array of values, or a single string.
      */
@@ -231,7 +237,8 @@ class Contact_Vcard_Parse
      *     \, => ,
      *     literal \n => newline
      *
-     * @param  mixed &$text The text to unescape.
+     * @param mixed &$text The text to unescape.
+     *
      * @access public
      * @return void
      */
@@ -242,7 +249,7 @@ class Contact_Vcard_Parse
                 $this->unescape($val);
                 $text[$key] = $val;
             }
-			return;
+            return;
         }
         /*
         $text = str_replace('\:', ':', $text);
@@ -273,10 +280,11 @@ class Contact_Vcard_Parse
      * parameters, and values of each part of the vCard. Processes both
      * 2.1 and 3.0 vCard sources.
      *
-     * @param  array   $source    An array of lines to be read for vCard
-     *         information.
-     * @param  boolean $decode_qp Optional; Decode quoted printable if true.
-     *         This is the default.
+     * @param array   $source    An array of lines to be read for vCard
+     *        information.
+     * @param boolean $decode_qp Optional; Decode quoted printable if true.
+     *        This is the default.
+     *
      * @access private
      * @return array An array of of vCard information extracted from the
      *         source array.
@@ -365,7 +373,7 @@ class Contact_Vcard_Parse
                     // QUOTED-PRINTABLE is not allowed in version 3.0,
                     // but we don't check for versioning, so we do it
                     // regardless.  ;-)
-                    $this->_decode_qp($params, $right);
+                    $this->_decodeQp($params, $right);
 
                     // now get the value-data from the line, based on
                     // the typedef
@@ -433,7 +441,7 @@ class Contact_Vcard_Parse
      * Takes a vCard line and extracts the Type-Definition for the line.
      *
      * @param string $text A left-part (before-the-colon part) from a
-     * vCard line.
+     *        vCard line.
      *
      * @access private
      * @return string The type definition for the line.
@@ -451,8 +459,9 @@ class Contact_Vcard_Parse
     /**
      * Finds the Type-Definition parameters for a vCard line.
      *
-     * @param  string $text A left-part (before-the-colon part) from a
-     *         vCard line.
+     * @param string $text A left-part (before-the-colon part) from a
+     *        vCard line.
+     *
      * @access private
      * @return mixed An array of parameters.
      */
@@ -526,21 +535,22 @@ class Contact_Vcard_Parse
      * Looks at the parameters of a vCard line; if one of them is
      * ENCODING[] => QUOTED-PRINTABLE then decode the text in-place.
      *
-     * @param  array  &$params A parameter array from a vCard line.
-     * @param  string &$text   A right-part (after-the-colon part) from a
-     *         vCard line.
+     * @param array  &$params A parameter array from a vCard line.
+     * @param string &$text   A right-part (after-the-colon part) from a
+     *        vCard line.
+     *
      * @access private
      * @return void
      */
-    function _decode_qp(&$params, &$text)
+    function _decodeQp(&$params, &$text)
     {
         // loop through each parameter
         foreach ($params as $param_key => $param_val) {
 
             // check to see if it's an encoding param
             if (trim(strtoupper($param_key)) != 'ENCODING') {
-            	continue;
-			}
+                continue;
+            }
 
             // loop through each encoding param value
             foreach ($param_val as $enc_key => $enc_val) {
@@ -555,7 +565,7 @@ class Contact_Vcard_Parse
                 if ($enc_val == 'BASE64') {
                     $text = base64_decode($text);
                     return;
-                 }
+                }
             }
         }
     }
@@ -570,8 +580,9 @@ class Contact_Vcard_Parse
      * Shamelessly lifted from Frank Hellwig <frank@hellwig.org> and his
      * vCard PHP project <http://vcardphp.sourceforge.net>.
      *
-     * @param  string $value The first element in a parameter name-value
-     *         pair.
+     * @param string $value The first element in a parameter name-value
+     *        pair.
+     *
      * @access private
      * @return string The proper parameter name (TYPE, ENCODING, or
      *         VALUE).
@@ -621,8 +632,9 @@ class Contact_Vcard_Parse
      * Parses a vCard line value identified as being of the "N"
      * (structured name) type-defintion.
      *
-     * @param  string $text The right-part (after-the-colon part) of a
-     *         vCard line.
+     * @param string $text The right-part (after-the-colon part) of a
+     *        vCard line.
+     *
      * @access private
      * @return array An array of key-value pairs where the key is the
      *         portion-name and the value is the portion-value. The value
@@ -647,8 +659,8 @@ class Contact_Vcard_Parse
      * Parses a vCard line value identified as being of the "ADR"
      * (structured address) type-defintion.
      *
-     * @param  string $text The right-part (after-the-colon part) of a
-     *         vCard line.
+     * @param string $text The right-part (after-the-colon part) of a
+     *        vCard line.
      *
      * @access private
      * @return array An array of key-value pairs where the key is the
@@ -676,8 +688,9 @@ class Contact_Vcard_Parse
      * Parses a vCard line value identified as being of the "NICKNAME"
      * (informal or descriptive name) type-defintion.
      *
-     * @param  string $text The right-part (after-the-colon part) of a
-     *         vCard line.
+     * @param string $text The right-part (after-the-colon part) of a
+     *        vCard line.
+     *
      * @access private
      * @return array An array of nicknames.
      */
@@ -691,8 +704,9 @@ class Contact_Vcard_Parse
      * Parses a vCard line value identified as being of the "ORG"
      * (organizational info) type-defintion.
      *
-     * @param  string $text The right-part (after-the-colon part) of a
-     *         vCard line.
+     * @param string $text The right-part (after-the-colon part) of a
+     *        vCard line.
+     *
      * @access private
      * @return array An array of organizations; each element of the array
      *         is itself an array, which indicates primary organization and
@@ -713,8 +727,9 @@ class Contact_Vcard_Parse
      * Parses a vCard line value identified as being of the "CATEGORIES"
      * (card-category) type-defintion.
      *
-     * @param  string $text The right-part (after-the-colon part) of a
-     *         vCard line.
+     * @param string $text The right-part (after-the-colon part) of a
+     *        vCard line.
+     *
      * @access private
      * @return array An array of categories.
      */
@@ -727,8 +742,9 @@ class Contact_Vcard_Parse
      * Parses a vCard line value identified as being of the "GEO"
      * (geographic coordinate) type-defintion.
      *
-     * @param  string $text The right-part (after-the-colon part) of a
-     *         vCard line.
+     * @param string $text The right-part (after-the-colon part) of a
+     *        vCard line.
+     *
      * @access private
      * @return array An array of lat-lon geocoords.
      */
