@@ -15,14 +15,20 @@ http://pear.php.net/dtd/package-2.0.xsd">
   and get back an array of the elements of each vCard in the file or text.
  </description>
  <lead>
+  <name>Till Klampaeckel</name>
+  <user>till</user>
+  <email>till@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
   <name>Paul M. Jones</name>
   <user>pmjones</user>
   <email>pmjones@php.net</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
 
- <date>2006-12-12</date>
- <time>18:10:38</time>
+ <date>2009-07-01</date>
+ <time>01:30:00</time>
 
  <version>
   <release>1.31.1</release>
@@ -50,6 +56,10 @@ http://pear.php.net/dtd/package-2.0.xsd">
    <dir name="examples">
     <file name="test.php" role="doc" />
     <file name="test.vcf" role="doc" />
+   </dir>
+   <dir name="tests">
+    <file name="AllTests.php" role="test" />
+    <file name="ContactVcardParseTest.php" role="test" />
    </dir>
    <file name="Contact_Vcard_Parse.php" role="php" />
   </dir>
