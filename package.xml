@@ -13,6 +13,8 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <description>
   Allows you to parse vCard files and text blocks,
   and get back an array of the elements of each vCard in the file or text.
+
+  Users of Contact_Vcard_Parse are encourage to check out File_IMC.
  </description>
  <lead>
   <name>Till Klampaeckel</name>
