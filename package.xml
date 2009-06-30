@@ -47,9 +47,11 @@ http://pear.php.net/dtd/package-2.0.xsd">
      <file name="Parse.php" role="php"/>
     </dir>
    </dir>
+   <dir name="examples">
+    <file name="test.php" role="doc" />
+    <file name="test.vcf" role="doc" />
+   </dir>
    <file name="Contact_Vcard_Parse.php" role="php" />
-   <file name="test.php" role="doc" />
-   <file name="test.vcf" role="doc" />
   </dir>
  </contents>
 
