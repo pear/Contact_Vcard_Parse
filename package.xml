@@ -46,8 +46,8 @@ http://pear.php.net/dtd/package-2.0.xsd">
   * File is now at Contact/Vcard/Parse.php (still keeping old location for BC)
   * Fix bug #5988: does not work with apple adressbook exported vcard files
   * Using package.xml v2.0
-  * patch by Andrew Whitehouse to fix notices
-  * added test by Andrew Whitehouse, testParameters()
+  * fixed #14972: patch by Andrew Whitehouse to fix notices
+  * fixed #14972: added test by Andrew Whitehouse, testParameters()
  </notes>
 
  <contents>
