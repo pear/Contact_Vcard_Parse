@@ -95,12 +95,44 @@ class ContactVcardParseTest extends PHPUnit_Framework_TestCase
         $this->parser = new Contact_Vcard_Parse();
     }
 
+    /**
+     * @http://bugs.horde.org/view.php?actionID=view_file&type=vcf&file=SFMA.vcf&ticket=8366
+     */
+    protected function getPropertyGroupVcard()
+    {
+        $vcard  = "BEGIN:VCARD" . "\n";
+        $vcard .= "VERSION:3.0" . "\n";
+        $vcard .= "N:Braunstein;Sharon;;;" . "\n";
+        $vcard .= "FN:Sharon Braunstein" . "\n";
+        $vcard .= "ORG:Seed & Feed\, Inc.;" . "\n";
+        $vcard .= "EMAIL;type=INTERNET;type=WORK;type=pref:scrooge@seedandfeed.org" . "\n";
+        $vcard .= "TEL;type=WORK;type=pref:404-688-6688" . "\n";
+        $vcard .= "item1.ADR;type=HOME;type=pref:;;Attn\: Sharon Braunstein\nP.O. Box 5396;Atlanta;GA;31107;" . "\n";
+        $vcard .= "item1.X-ABLabel:bill to" . "\n";
+        $vcard .= "item1.X-ABADR:us" . "\n";
+        $vcard .= "CATEGORIES:Customers:Verendus LLC" . "\n";
+        $vcard .= "X-ABUID:8291364B-FCBF-4577-8294-166AC0E8B9C7\:ABPerson" . "\n";
+        $vcard .= "END:VCARD";
+
+        return $vcard;
+    }
+
+    /**
+     * This test doesn't make any sense.
+     */
     public function testPropertyGroups()
     {
-        list($ret) = $this->parser->fromText($this->vcard);
+        $this->markTestIncomplete("Property groups are not yet implemented and this test didn't make any sense!");
+        return;
+
+        $vcard = $this->getPropertyGroupVcard();
+
+        list($ret) = $this->parser->fromText($vcard);
 
         list($data) = $ret["A.N"];
         $values = $data['value'];
+
+        //var_dump($vcard, $values, $ret);
 
         $this->assertEquals("FamilyName", $values[0][0]);
         $this->assertEquals("GivenName", $values[1][0]);
@@ -109,6 +141,12 @@ class ContactVcardParseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("Suffix", $values[4][0]);
     }
 
+    /**
+     * Test parameter parsing.
+     *
+     * @uses self::$parser
+     * @uses self::$vcard
+     */
 	public function testParameters()
     {
         list($ret) = $this->parser->fromText($this->vcard);
