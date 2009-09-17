@@ -490,20 +490,31 @@ class Contact_Vcard_Parse
             // parameter value, not the parameter name.
             $key = strtoupper(trim($tmp[0]));
 
-            // get the parameter name by checking to see if it's in
-            // vCard 2.1 or 3.0 format.
-            $name = $this->_getParamName($key);
-
             // list of all parameter values
-            if (isset($tmp[1])) {
-                $listall = trim($tmp[1]);
-            } else {
-                $listall = '';
-            }
+            if (!isset($tmp[1])) {
 
-            // if there is a value-list for this parameter, they are
-            // separated by commas, so split them out too.
-            $list = $this->splitByComma($listall);
+                // Parameter value without key - default to 'TYPE=<value>'
+                $list = array($key);
+                $name = 'TYPE';
+
+            } else {
+
+                // get the parameter name by checking to see if it's in
+                // vCard 2.1 or 3.0 format.
+                $name = $this->_getParamName($key);
+
+                // list of all parameter values
+                if (isset($tmp[1])) {
+                    $listall = trim($tmp[1]);
+                } else {
+                    $listall = '';
+                }
+
+                // if there is a value-list for this parameter, they are
+                // separated by commas, so split them out too.
+                $list = $this->splitByComma($listall);
+
+            }
 
             // now loop through each value in the parameter and retain
             // it.  if the value is blank, that means it's a 2.1-style
