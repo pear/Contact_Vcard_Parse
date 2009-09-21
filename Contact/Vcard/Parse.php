@@ -91,8 +91,7 @@ class Contact_Vcard_Parse
      */
     function fileGetContents($filename)
     {
-        if (file_exists($filename) &&
-            is_readable($filename)) {
+        if (file_exists($filename) && is_readable($filename)) {
 
             $text = '';
             $len  = filesize($filename);
@@ -328,8 +327,7 @@ class Contact_Vcard_Parse
 
                 // nope.  does this line indicate the beginning of
                 // a new vCard?
-                if (strtoupper($left) == 'BEGIN' &&
-                    strtoupper($right) == 'VCARD') {
+                if (strtoupper($left) == 'BEGIN' && strtoupper($right) == 'VCARD') {
 
                     // tell the loop that we've begun a new card
                     $begin = true;
@@ -346,8 +344,7 @@ class Contact_Vcard_Parse
                 // yep, we've started, but we don't know how far along
                 // we are in the card. is this the ending line of the
                 // current vCard?
-                if (strtoupper($left) == 'END' &&
-                    strtoupper($right) == 'VCARD') {
+                if (strtoupper($left) == 'END' && strtoupper($right) == 'VCARD') {
 
                     // yep, we're done. keep the info from the current
                     // card...
