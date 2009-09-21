@@ -101,7 +101,7 @@ class ContactVcardParseTest extends PHPUnit_Framework_TestCase
      *
      * @return string
      */
-    protected function getExampleVcard()
+    protected static function getExampleVcard()
     {
         $vcard  = "BEGIN:VCARD" . PHP_EOL;
         $vcard .= "VERSION:3.0" . PHP_EOL;
@@ -183,42 +183,62 @@ class ContactVcardParseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider for {@link self::testExampleParser()}.
+     *
+     * @return array
+     */
+    public static function exampleProvider()
+    {
+        $vcard  = self::getExampleVcard();
+        $parser = new Contact_Vcard_Parse();
+        $parsed = $parser->fromText($vcard);
+
+        $data = array(
+
+            array('3.0', $parsed[0]['VERSION'][0]['value'][0][0]),
+            array('Shagnasty', $parsed[0]['N'][0]['value'][0][0]),
+            array('Bolivar', $parsed[0]['N'][0]['value'][1][0]),
+            array('Odysseus', $parsed[0]['N'][0]['value'][2][0]),
+            array('Mr.', $parsed[0]['N'][0]['value'][3][0]),
+            array('III', $parsed[0]['N'][0]['value'][4][0]),
+            array('B.S.', $parsed[0]['N'][0]['value'][4][1]),
+            array('Bolivar Shagnasty', $parsed[0]['FN'][0]['value'][0][0]),
+
+        // Address
+            array('HOME', $parsed[0]['ADR'][0]['param']['TYPE'][0]),
+            array('WORK', $parsed[0]['ADR'][0]['param']['TYPE'][1]),
+            array('123 Main', $parsed[0]['ADR'][0]['value'][2][0]),
+            array('Apartment 101', $parsed[0]['ADR'][0]['value'][2][1]),
+            array('Beverly Hills', $parsed[0]['ADR'][0]['value'][3][0]),
+            array('CA', $parsed[0]['ADR'][0]['value'][4][0]),
+            array('90210', $parsed[0]['ADR'][0]['value'][5][0]),
+            array('', $parsed[0]['ADR'][0]['value'][6][0]),
+
+        // Email
+            array('HOME', $parsed[0]['EMAIL'][0]['param']['TYPE'][0]),
+            array('WORK', $parsed[0]['EMAIL'][0]['param']['TYPE'][1]),
+            array('boshag@example.com', $parsed[0]['EMAIL'][0]['value'][0][0]),
+            array('PREF', $parsed[0]['EMAIL'][1]['param']['TYPE'][0]),
+            array('boshag@ciaweb.net', $parsed[0]['EMAIL'][1]['value'][0][0]),
+
+        );
+
+        return $data;
+    }
+
+    /**
      * This tests asserts that Contact_Vcard_Parse still behaves just like
      * the example online advertises.
      *
-     * @return void
-     * @uses   self::getExampleVcard()
+     * @param string $expect The value to expect.
+     * @param string $actual The value returned.
+     *
+     * @return       void
+     * @dataProvider exampleProvider
+     * @uses         self::getExampleVcard()
      */
-    public function testExampleParser()
+    public function testExampleParser($expect, $actual)
     {
-        $vcard  = $this->getExampleVcard();
-        $parsed = $this->parser->fromText($vcard);
-
-        //var_dump($parsed);
-        $this->assertSame('3.0', $parsed[0]['VERSION'][0]['value'][0][0]);
-        $this->assertSame('Shagnasty', $parsed[0]['N'][0]['value'][0][0]);
-        $this->assertSame('Bolivar', $parsed[0]['N'][0]['value'][1][0]);
-        $this->assertSame('Odysseus', $parsed[0]['N'][0]['value'][2][0]);
-        $this->assertSame('Mr.', $parsed[0]['N'][0]['value'][3][0]);
-        $this->assertSame('III', $parsed[0]['N'][0]['value'][4][0]);
-        $this->assertSame('B.S.', $parsed[0]['N'][0]['value'][4][1]);
-        $this->assertSame('Bolivar Shagnasty', $parsed[0]['FN'][0]['value'][0][0]);
-
-        // Address
-        $this->assertSame('HOME', $parsed[0]['ADR'][0]['param']['TYPE'][0]);
-        $this->assertSame('WORK', $parsed[0]['ADR'][0]['param']['TYPE'][1]);
-        $this->assertSame('123 Main', $parsed[0]['ADR'][0]['value'][2][0]);
-        $this->assertSame('Apartment 101', $parsed[0]['ADR'][0]['value'][2][1]);
-        $this->assertSame('Beverly Hills', $parsed[0]['ADR'][0]['value'][3][0]);
-        $this->assertSame('CA', $parsed[0]['ADR'][0]['value'][4][0]);
-        $this->assertSame('90210', $parsed[0]['ADR'][0]['value'][5][0]);
-        $this->assertSame('', $parsed[0]['ADR'][0]['value'][6][0]);
-
-        // Email
-        $this->assertSame('HOME', $parsed[0]['EMAIL'][0]['param']['TYPE'][0]);
-        $this->assertSame('WORK', $parsed[0]['EMAIL'][0]['param']['TYPE'][1]);
-        $this->assertSame('boshag@example.com', $parsed[0]['EMAIL'][0]['value'][0][0]);
-        $this->assertSame('PREF', $parsed[0]['EMAIL'][1]['param']['TYPE'][0]);
-        $this->assertSame('boshag@ciaweb.net', $parsed[0]['EMAIL'][1]['value'][0][0]);
+        $this->assertSame($expect, $actual);
     }
 }
