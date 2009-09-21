@@ -40,6 +40,7 @@ require_once "Contact/Vcard/Parse.php";
  * @license   http://www.php.net/license/2_02.txt  PHP License 2.0
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/Contact_Vcard_Parse
+ * @todo      Make protected functions dataproviders.
  */
 class ContactVcardParseTest extends PHPUnit_Framework_TestCase
 {
@@ -96,7 +97,28 @@ class ContactVcardParseTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @http://bugs.horde.org/view.php?actionID=view_file&type=vcf&file=SFMA.vcf&ticket=8366
+     * @link http://pear.php.net/manual/en/package.fileformats.contact-vcard-parse.data.php
+     *
+     * @return string
+     */
+    protected function getExampleVcard()
+    {
+        $vcard  = "BEGIN:VCARD" . PHP_EOL;
+        $vcard .= "VERSION:3.0" . PHP_EOL;
+        $vcard .= "N:Shagnasty;Bolivar;Odysseus;Mr.;III,B.S." . PHP_EOL;
+        $vcard .= "FN:Bolivar Shagnasty" . PHP_EOL;
+        $vcard .= "ADR;TYPE=HOME,WORK:;;123 Main,Apartment 101;Beverly Hills;CA;90210" . PHP_EOL;
+        $vcard .= "EMAIL;TYPE=HOME;TYPE=WORK:boshag@example.com" . PHP_EOL;
+        $vcard .= "EMAIL;TYPE=PREF:boshag@ciaweb.net" . PHP_EOL;
+        $vcard .= "END:VCARD";
+
+        return $vcard;
+    }
+
+    /**
+     * @link http://bugs.horde.org/view.php?actionID=view_file&type=vcf&file=SFMA.vcf&ticket=8366
+     *
+     * @return string
      */
     protected function getPropertyGroupVcard()
     {
@@ -158,5 +180,44 @@ class ContactVcardParseTest extends PHPUnit_Framework_TestCase
                           'TYPE' => array("PARAMVALUE3"));
 
         $this->assertSame($expected, $data['param']);
+    }
+
+    /**
+     * This tests asserts that Contact_Vcard_Parse still behaves just like
+     * the example online advertises.
+     *
+     * @return void
+     * @uses   self::getExampleVcard()
+     */
+    public function testExampleParser()
+    {
+        $vcard  = $this->getExampleVcard();
+        $parsed = $this->parser->fromText($vcard);
+        //var_dump($parsed);
+        $this->assertSame('3.0', $parsed[0]['VERSION'][0]['value'][0][0]);
+        $this->assertSame('Shagnasty', $parsed[0]['N'][0]['value'][0][0]);
+        $this->assertSame('Bolivar', $parsed[0]['N'][0]['value'][1][0]);
+        $this->assertSame('Odysseus', $parsed[0]['N'][0]['value'][2][0]);
+        $this->assertSame('Mr.', $parsed[0]['N'][0]['value'][3][0]);
+        $this->assertSame('III', $parsed[0]['N'][0]['value'][4][0]);
+        $this->assertSame('B.S.', $parsed[0]['N'][0]['value'][4][1]);
+        $this->assertSame('Bolivar Shagnasty', $parsed[0]['FN'][0]['value'][0][0]);
+
+        // Address
+        $this->assertSame('HOME', $parsed[0]['ADR'][0]['param']['TYPE'][0]);
+        $this->assertSame('WORK', $parsed[0]['ADR'][0]['param']['TYPE'][1]);
+        $this->assertSame('123 Main', $parsed[0]['ADR'][0]['value'][2][0]);
+        $this->assertSame('Apartment 101', $parsed[0]['ADR'][0]['value'][2][1]);
+        $this->assertSame('Beverly Hills', $parsed[0]['ADR'][0]['value'][3][0]);
+        $this->assertSame('CA', $parsed[0]['ADR'][0]['value'][4][0]);
+        $this->assertSame('90210', $parsed[0]['ADR'][0]['value'][5][0]);
+        $this->assertSame('', $parsed[0]['ADR'][0]['value'][6][0]);
+
+        // Email
+        $this->assertSame('HOME', $parsed[0]['EMAIL'][0]['param']['TYPE'][0]);
+        $this->assertSame('WORK', $parsed[0]['EMAIL'][0]['param']['TYPE'][1]);
+        $this->assertSame('boshag@example.com', $parsed[0]['EMAIL'][0]['value'][0][0]);
+        $this->assertSame('PREF', $parsed[0]['EMAIL'][1]['param']['TYPE'][0]);
+        $this->assertSame('boshag@ciaweb.net', $parsed[0]['EMAIL'][1]['value'][0][0]);
     }
 }
