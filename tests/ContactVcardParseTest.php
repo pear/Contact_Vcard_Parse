@@ -169,7 +169,7 @@ class ContactVcardParseTest extends PHPUnit_Framework_TestCase
      * @uses self::$parser
      * @uses self::$vcard
      */
-	public function testParameters()
+    public function testParameters()
     {
         list($ret) = $this->parser->fromText($this->vcard);
 
@@ -193,6 +193,7 @@ class ContactVcardParseTest extends PHPUnit_Framework_TestCase
     {
         $vcard  = $this->getExampleVcard();
         $parsed = $this->parser->fromText($vcard);
+
         //var_dump($parsed);
         $this->assertSame('3.0', $parsed[0]['VERSION'][0]['value'][0][0]);
         $this->assertSame('Shagnasty', $parsed[0]['N'][0]['value'][0][0]);
