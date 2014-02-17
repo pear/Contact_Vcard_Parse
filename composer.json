@@ -1,0 +1,36 @@
+{
+    "authors": [
+        {
+            "email": "till@php.net",
+            "name": "Till Klampaeckel",
+            "role": "Lead"
+        },
+        {
+            "email": "pmjones@php.net",
+            "name": "Paul M. Jones",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Contact_Vcard_Parse": "./"
+        }
+    },
+    "description": "More info available on: http://pear.php.net/package/Contact_Vcard_Parse",
+    "include-path": [
+        "./"
+    ],
+    "license": "PHP License",
+    "name": "pear/contact_vcard_parse",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Contact_Vcard_Parse",
+        "source": "https://github.com/pear/Contact_Vcard_Parse"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
